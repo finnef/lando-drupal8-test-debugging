@@ -40,6 +40,8 @@ if [ ! -f /app/web/.gitignore ]; then
 composer.lock
 vendor
 sites/default/settings.php
+sites/default/files
+sites/simpletest
 " > .gitignore
 fi
 
