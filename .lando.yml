@@ -1,0 +1,32 @@
+name: drupal8phpunit
+# https://docs.devwithlando.io/tutorials/drupal8.html
+recipe: drupal8
+
+# Add some default configuration for the recipe here. Which will be passed to all the services within the recipe.
+# https://docs.devwithlando.io/recipes/drupal8.html
+config:
+  # Set the webroot dir.
+  webroot: web
+  # Enable xdebug autostart for CLI debugging.
+  xdebug: true
+
+# We can add additional services here or even override some configuration.
+services:
+  appserver:
+    run:
+      - 'bash $LANDO_MOUNT/init.sh'
+    overrides:
+       services:
+         environment:
+           # Enable PHPStorm XDebug with CLI.
+           PHP_IDE_CONFIG: "serverName=appserver"
+
+# This will add some tools from the containers to the command line of your OS.
+# https://docs.devwithlando.io/config/tooling.html
+tooling:
+  phpunit:
+    service: appserver
+    description: "Run PHP Unit tests: lando phpunit"
+    cmd: "/app/web/vendor/bin/phpunit --debug --configuration /app/web/core/phpunit.xml"
+  drush:
+    cmd: "/app/web/vendor/bin/drush --root=/app/web"
