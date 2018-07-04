@@ -13,7 +13,7 @@ else
     composer install
 
     # Upgrade PHPUnit to work with PHP 7, add drush.
-    composer require "phpunit/phpunit ^6.0" "drush/drush"
+    composer require --update-with-dependencies "phpunit/phpunit ^6.0" "drush/drush"
 
     echo "Installing default site."
     # Create file dirs.
@@ -30,6 +30,7 @@ else
         ln -s $LANDO_APP_ROOT_BIND/web/sites/default/files $LANDO_MOUNT/files/public
     fi
 
+    cd $LANDO_MOUNT/web
     drush site-install
 fi
 
@@ -41,7 +42,7 @@ vendor
 sites/default/settings.php
 sites/default/files
 sites/simpletest
-" > .gitignore
+" > $LANDO_MOUNT/web/.gitignore
 fi
 
 # Create phpunit.xml and configure.
