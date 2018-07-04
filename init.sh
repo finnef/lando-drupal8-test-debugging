@@ -13,7 +13,6 @@ else
     composer install
 
     # Upgrade PHPUnit to work with PHP 7, add drush.
-    cd web
     composer require "phpunit/phpunit ^6.0" "drush/drush"
 
     echo "Installing default site."
@@ -52,5 +51,4 @@ if [ ! -f /app/web/core/phpunit.xml ]; then
     cp phpunit.xml.dist phpunit.xml
     sed -i 's/SIMPLETEST_DB" value="/SIMPLETEST_DB" value="sqlite:\/\/localhost\/\/app\/web\/sites\/default\/files\/test.sqlite/g' phpunit.xml
     sed -i 's/SIMPLETEST_BASE_URL" value="/SIMPLETEST_BASE_URL" value="http:\/\/\'$LANDO_APP_NAME'.'$LANDO_DOMAIN'/g' phpunit.xml
-fi;
-
+fi
