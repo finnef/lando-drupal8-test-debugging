@@ -16,7 +16,6 @@ The purpose of this lando "recipe" is to provide an easy setup for Drupal 8 core
 - register the PHP interpreter from Docker so you can use its debugger ![cli-interpreters](README.images/cli-interpreters.png)
 - configure the PHP debug settings, especially the max simultaneous connections ![debug](README.images/debug.png)
 - configure a server with path mappings so PHPStorm knows where you are when debugging. Make sure the server is named appserver and you map the top level path to /app ![server-path-mappings](README.images/server-path-mappings.png)
-- configure the Test Framework to enable tests via PHPStorm GUI ![test-framework](README.images/test-framework.png)
 
 ## Run!
 
