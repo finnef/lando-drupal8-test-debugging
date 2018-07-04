@@ -20,6 +20,9 @@ services:
          environment:
            # Enable PHPStorm XDebug with CLI.
            PHP_IDE_CONFIG: "serverName=appserver"
+  database:
+    # Add a static db port for easy bookmarking and access through SQL clients.
+    portforward: 33006
 
 # This will add some tools from the containers to the command line of your OS.
 # https://docs.devwithlando.io/config/tooling.html
