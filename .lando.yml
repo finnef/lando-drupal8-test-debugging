@@ -14,7 +14,7 @@ config:
 services:
   appserver:
     run:
-      - 'bash $LANDO_MOUNT/init.sh'
+      - 'bash $LANDO_MOUNT/config/init.sh'
     overrides:
        services:
          environment:
@@ -32,6 +32,6 @@ tooling:
   phpunit:
     service: appserver
     description: "Run PHP Unit tests: lando phpunit"
-    cmd: "/app/web/vendor/bin/phpunit --debug --configuration /app/web/core/phpunit.xml"
+    cmd: "/app/web/vendor/bin/phpunit --debug --configuration /app/web/core/phpunit.xml --printer=\\Drupal\\Tests\\Listeners\\HtmlOutputPrinter"
   drush:
     cmd: "/app/web/vendor/bin/drush --root=/app/web"

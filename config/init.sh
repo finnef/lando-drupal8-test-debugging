@@ -18,7 +18,7 @@ else
     echo "Installing default site."
     # Create file dirs.
     cd $LANDO_MOUNT
-    mkdir -p -m 777 web/sites/default/files
+    mkdir -p -m 777 web/sites/default/files/phpunit
     mkdir -p -m 777 web/sites/simpletest
     mkdir -p -m 777 files/private
     mkdir -p -m 777 files/tmp
@@ -26,7 +26,7 @@ else
 
     # Symlink the settings and public file dir.
     if [ ! -L "$LANDO_MOUNT/web/sites/default/settings.php" ]; then
-        ln -s $LANDO_MOUNT/sites.default.settings.php $LANDO_MOUNT/web/sites/default/settings.php
+        ln -s $LANDO_MOUNT/config/sites.default.settings.php $LANDO_MOUNT/web/sites/default/settings.php
     fi
     if [ ! -L "$LANDO_MOUNT/files/public" ]; then
         ln -s $LANDO_APP_ROOT_BIND/web/sites/default/files $LANDO_MOUNT/files/public
@@ -35,7 +35,7 @@ else
         ln -s $LANDO_APP_ROOT_BIND/web/sites/simpletest $LANDO_MOUNT/files/simpletest
     fi
 
-    cd $LANDO_MOUNT/web
+    cd web
     drush site-install
 fi
 
@@ -55,6 +55,9 @@ if [ ! -f $LANDO_MOUNT/web/core/phpunit.xml ]; then
     echo 'Creating phpunit.xml.'
     cd $LANDO_MOUNT/web/core
     cp phpunit.xml.dist phpunit.xml
-    sed -i 's/SIMPLETEST_DB" value="/SIMPLETEST_DB" value="sqlite:\/\/localhost\/\'$LANDO_MOUNT'\/web\/sites\/default\/files\/test.sqlite/g' phpunit.xml
-    sed -i 's/SIMPLETEST_BASE_URL" value="/SIMPLETEST_BASE_URL" value="http:\/\/\'$LANDO_APP_NAME'.'$LANDO_DOMAIN'/g' phpunit.xml
+    sed -i 's/SIMPLETEST_DB" value=""/SIMPLETEST_DB" value="sqlite:\/\/localhost\/\'$LANDO_MOUNT'\/web\/sites\/default\/files\/test.sqlite"/' phpunit.xml
+    sed -i 's/SIMPLETEST_BASE_URL" value=""/SIMPLETEST_BASE_URL" value="http:\/\/\'$LANDO_APP_NAME'.'$LANDO_DOMAIN'"/' phpunit.xml
+    sed -i 's/BROWSERTEST_OUTPUT_DIRECTORY" value=""/BROWSERTEST_OUTPUT_DIRECTORY" value="\'$LANDO_MOUNT'\/web\/sites\/default\/files\/phpunit"/' phpunit.xml
+    sed -i 's/beStrictAboutOutputDuringTests="true"/beStrictAboutOutputDuringTests="false" verbose="true" printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"/' phpunit.xml
+    sed -i 's/<\/phpunit>/<logging><log type="testdox-text" target="\'$LANDO_MOUNT'\/web\/sites\/default\/files\/testdox.txt"\/><\/logging><\/phpunit>/' phpunit.xml
 fi

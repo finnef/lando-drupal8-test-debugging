@@ -18,6 +18,8 @@ The purpose of this lando "recipe" is to provide an easy setup for Drupal 8 core
 - configure a server with path mappings so PHPStorm knows where you are when debugging. Make sure the server is named appserver and you map the top level path to /app ![server-path-mappings](README.images/server-path-mappings.png)
 - configure the Test Framework to enable tests via PHPStorm GUI ![test-framework](README.images/test-framework.png)
 
+## Run!
+
 You should now be able to run and debug Drupal 8 core tests. From the command line it looks like this: 
 ```bash
 # unit test
@@ -26,6 +28,9 @@ lando phpunit "/app/web/core/modules/toolbar/tests/src/Unit/PageCache/AllowToolb
 lando phpunit "/app/web/core/modules/field_ui/tests/src/Kernel/EntityDisplayTest.php"
 # functional test
 lando phpunit "/app/web/core/tests/Drupal/FunctionalTests/Breadcrumb/Breadcrumb404Test.php"
+# functional javascript test
+sh run-selenium.sh
+lando phpunit "/app/web/core/tests/Drupal/FunctionalJavascriptTests/Tests/JSWebWithWebDriverAssertTest.php"
 ```
 Note that you need to provide the path to the test file as seen in the container, not the host. Try and enable your debug listener in PHPStorm, setting a breakpoint in a test and running the test. If you cannot get this to work please leave feedback on the GitHub [project page](https://github.com/finnef/lando-drupal8-test-debugging).
 
@@ -37,4 +42,5 @@ Note that you need to provide the path to the test file as seen in the container
 
 ## Future imporvements
 - run tests via PHPStorm GUI
-- run functional javascript tests
+- find out why we cannot use phpunit 7
+- export and import PHPStorm settings
