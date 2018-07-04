@@ -6,7 +6,7 @@ The purpose of this lando "recipe" is to provide an easy setup for Drupal 8 core
 ## Setup 
 
 ### To start:
-1. make sure you have [lando](https://github.com/lando/lando/releases) stalled.
+1. make sure you have [lando](https://github.com/lando/lando/releases) installed.
 2. download the .lando.yml and 2 supporting files to a new empty dir.
 3. run lando start.  
 

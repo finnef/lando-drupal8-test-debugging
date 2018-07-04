@@ -48,7 +48,7 @@ fi
 # Create phpunit.xml and configure.
 if [ ! -f /app/web/core/phpunit.xml ]; then
     echo 'Creating phpunit.xml.'
-    cd app/web/core
+    cd $LANDO_MOUNT/web/core
     cp phpunit.xml.dist phpunit.xml
     sed -i 's/SIMPLETEST_DB" value="/SIMPLETEST_DB" value="sqlite:\/\/localhost\/\/app\/web\/sites\/default\/files\/test.sqlite/g' phpunit.xml
     sed -i 's/SIMPLETEST_BASE_URL" value="/SIMPLETEST_BASE_URL" value="http:\/\/\'$LANDO_APP_NAME'.'$LANDO_DOMAIN'/g' phpunit.xml
