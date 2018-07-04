@@ -778,6 +778,8 @@ $settings['entity_update_batch_size'] = 50;
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
 
+$config_directories[CONFIG_SYNC_DIRECTORY] = $app_root . '../files/sync';
+
 if (getenv('LANDO') === 'ON') {
   $lando_info = json_decode(getenv('LANDO_INFO'), TRUE);
   $databases['default']['default'] = [

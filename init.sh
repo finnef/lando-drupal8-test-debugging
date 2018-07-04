@@ -12,15 +12,17 @@ else
     cd web
     composer install
 
-    # Upgrade PHPUnit to work with PHP 7, add drush.
-    composer require --update-with-dependencies "phpunit/phpunit ^6.0" "drush/drush"
+    # Upgrade PHPUnit to work with PHP 7, add drush and selenium
+    composer require --update-with-dependencies "phpunit/phpunit ^6.0" "drush/drush" "joomla-projects/selenium-server-standalone"
 
     echo "Installing default site."
     # Create file dirs.
     cd $LANDO_MOUNT
     mkdir -p -m 777 web/sites/default/files
+    mkdir -p -m 777 web/sites/simpletest
     mkdir -p -m 777 files/private
     mkdir -p -m 777 files/tmp
+    mkdir -p -m 777 files/sync
 
     # Symlink the settings and public file dir.
     if [ ! -L "$LANDO_MOUNT/web/sites/default/settings.php" ]; then
@@ -28,6 +30,9 @@ else
     fi
     if [ ! -L "$LANDO_MOUNT/files/public" ]; then
         ln -s $LANDO_APP_ROOT_BIND/web/sites/default/files $LANDO_MOUNT/files/public
+    fi
+    if [ ! -L "$LANDO_MOUNT/files/simpletest" ]; then
+        ln -s $LANDO_APP_ROOT_BIND/web/sites/simpletest $LANDO_MOUNT/files/simpletest
     fi
 
     cd $LANDO_MOUNT/web
