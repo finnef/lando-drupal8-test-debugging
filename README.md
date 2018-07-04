@@ -46,3 +46,4 @@ The test output files can be found in various locations under the /files directo
 - run tests via PHPStorm GUI
 - find out why we cannot use phpunit 7
 - export and import PHPStorm settings
+- enable Test module by default

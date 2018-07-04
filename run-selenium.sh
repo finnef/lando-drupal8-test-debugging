@@ -3,12 +3,15 @@
 # Prepare PATH for Chrome web driver.
 case "$(uname -s)" in
    Darwin)
+     echo 'detected Mac OS X'
      DRIVER_PATH=mac
      ;;
    Linux|GNU*|*BSD)
-     DRIVER_PATH=mac
+     echo 'detected Linux'
+     DRIVER_PATH=linux
      ;;
    CYGWIN*|MINGW32*|MSYS*)
+     echo 'detected Windows'
      DRIVER_PATH=windows
      ;;
 esac
