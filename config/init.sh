@@ -36,7 +36,7 @@ else
     fi
 
     cd web
-    drush site-install
+    drush site-install -y
 fi
 
 if [ ! -f $LANDO_MOUNT/web/.gitignore ]; then
