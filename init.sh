@@ -34,7 +34,7 @@ else
     drush site-install
 fi
 
-if [ ! -f /app/web/.gitignore ]; then
+if [ ! -f $LANDO_MOUNT/web/.gitignore ]; then
     # Ignore changed core files
     echo "composer.json
 composer.lock
@@ -46,10 +46,10 @@ sites/simpletest
 fi
 
 # Create phpunit.xml and configure.
-if [ ! -f /app/web/core/phpunit.xml ]; then
+if [ ! -f $LANDO_MOUNT/web/core/phpunit.xml ]; then
     echo 'Creating phpunit.xml.'
     cd $LANDO_MOUNT/web/core
     cp phpunit.xml.dist phpunit.xml
-    sed -i 's/SIMPLETEST_DB" value="/SIMPLETEST_DB" value="sqlite:\/\/localhost\/\/app\/web\/sites\/default\/files\/test.sqlite/g' phpunit.xml
+    sed -i 's/SIMPLETEST_DB" value="/SIMPLETEST_DB" value="sqlite:\/\/localhost\/\'$LANDO_MOUNT'\/web\/sites\/default\/files\/test.sqlite/g' phpunit.xml
     sed -i 's/SIMPLETEST_BASE_URL" value="/SIMPLETEST_BASE_URL" value="http:\/\/\'$LANDO_APP_NAME'.'$LANDO_DOMAIN'/g' phpunit.xml
 fi
