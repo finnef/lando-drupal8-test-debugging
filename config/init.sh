@@ -12,8 +12,8 @@ else
     cd web
     composer install
 
-    # Upgrade PHPUnit to work with PHP 7, add drush and selenium
-    composer require --update-with-dependencies "phpunit/phpunit ^6.0" "drush/drush" "joomla-projects/selenium-server-standalone"
+    # Upgrade PHPUnit to work with PHP 7, add drush, console, selenium
+    composer require --update-with-dependencies "phpunit/phpunit ^6.0" "drush/drush" "drupal/console" "joomla-projects/selenium-server-standalone"
 
     echo "Installing default site."
     # Create file dirs.

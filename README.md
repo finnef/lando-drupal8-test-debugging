@@ -6,16 +6,15 @@ The purpose of this lando "recipe" is to provide an easy setup for Drupal 8 core
 ## Setup 
 
 ### To start:
-1. make sure you have [lando](https://github.com/lando/lando/releases) installed.
+1. make sure you have [lando](https://github.com/lando/lando/releases), Chrome and java installed on your computer.
 2. download the .lando.yml and 2 supporting files to a new empty dir.
 3. run lando start.  
 
 ### Check your PHPStorm debug settings:
-- register Docker so you can register its PHP interpreter ![docker](README.images/docker.png)
-
-- register the PHP interpreter from Docker so you can use its debugger ![cli-interpreters](README.images/cli-interpreters.png)
-- configure the PHP debug settings, especially the max simultaneous connections ![debug](README.images/debug.png)
-- configure a server with path mappings so PHPStorm knows where you are when debugging. Make sure the server is named appserver and you map the top level path to /app ![server-path-mappings](README.images/server-path-mappings.png)
+- register Docker so you can register its PHP interpreter: Preferences > Build, Execution, Deployment > Docker ![docker](README.images/docker.png)
+- register the CLI PHP interpreter from Docker so you can use its debugger: Preferences > Languages & Frameworks > PHP ![cli-interpreters](README.images/cli-interpreters.png)
+- configure the PHP debug settings, especially the max simultaneous connections: Preferences > Languages & Frameworks > PHP > Debug ![debug](README.images/debug.png)
+- configure a server with path mappings so PHPStorm knows where you are when debugging. Make sure the server is named appserver and you map the top level path to /app: Preferences > Languages & Frameworks > PHP > Servers ![server-path-mappings](README.images/server-path-mappings.png)
 
 ## Run!
 
@@ -31,13 +30,15 @@ lando phpunit "/app/web/core/tests/Drupal/FunctionalTests/Breadcrumb/Breadcrumb4
 sh run-selenium.sh
 lando phpunit "/app/web/core/tests/Drupal/FunctionalJavascriptTests/Tests/JSWebWithWebDriverAssertTest.php"
 ```
-Note that you need to provide the path to the test file as seen in the container, not the host. For Functional Javascript tests you need to start the selenium server before running the test. Try and enable your debug listener in PHPStorm, setting a breakpoint in a test and running the test. If you cannot get this to work please leave feedback on the GitHub [project page](https://github.com/finnef/lando-drupal8-test-debugging).
+NB: You need to provide the path to the test file as seen in the container, not the host. 
+NNB: For Functional Javascript tests you need to start the selenium server before running the test. Selenium requires that you have java installed on your host.
+Try and enable your debug listener in PHPStorm, setting a breakpoint in a test and running the test. If you cannot get this to work please leave feedback on the GitHub [project page](https://github.com/finnef/lando-drupal8-test-debugging).
 
 The test output files can be found in various locations under the /files directory.
 
 ### The files in this package do the following:
 - **.lando.yml**: the lando file that spins up the apache/php/database containers and set some defaults. Here the init.sh script is called after the containers are up.
-- **config/init.sh**: this script (shallow) clones the Drupal git repository to the /web dir, and checks out the default branch. Then composer install runs to complete the vendor dir. It upgrades the phpunit version to work with PHP 7.1, and installs a local Drush in the container and installs Selenium. It creates dirs for file operations in /files. It links config/sites.default.settings.php into the Drupal installation so base setup is automatic. Then it runs drush site-install to setup a working installation. Lastly it configures phpunit.xml for testing. 
+- **config/init.sh**: this script (shallow) clones the Drupal git repository to the /web dir, and checks out the default branch. Then composer install runs to complete the vendor dir. It upgrades the phpunit version to work with PHP 7.1, and installs Drush, Drupal Console and Selenium. It creates dirs for file operations in /files. It links config/sites.default.settings.php into the Drupal installation so base setup is automatic. Then it runs drush site-install to setup a working installation. Lastly it configures phpunit.xml for testing. 
 - **config/sites.default.settings.php**: this settings file contains development defaults for Drupal 8. It connects to the lando database container.
 - **run-selenium.sh**: this script sets the correct Chrome drive path and launches the project-local standalone Selenium server.
 
