@@ -35,3 +35,5 @@ tooling:
     cmd: "/app/web/vendor/bin/phpunit --debug --configuration /app/web/core/phpunit.xml --printer=\\Drupal\\Tests\\Listeners\\HtmlOutputPrinter"
   drush:
     cmd: "/app/web/vendor/bin/drush --root=/app/web"
+  drupal:
+    cmd: "/app/web/vendor/bin/drupal --root=/app/web"
