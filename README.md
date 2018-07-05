@@ -15,6 +15,7 @@ The purpose of this lando "recipe" is to provide an easy setup for Drupal 8 core
 - register the CLI PHP interpreter from Docker so you can use its debugger: Preferences > Languages & Frameworks > PHP ![cli-interpreters](README.images/cli-interpreters.png)
 - configure the PHP debug settings, especially the max simultaneous connections: Preferences > Languages & Frameworks > PHP > Debug ![debug](README.images/debug.png)
 - configure a server with path mappings so PHPStorm knows where you are when debugging. Make sure the server is named appserver and you map the top level path to /app: Preferences > Languages & Frameworks > PHP > Servers ![server-path-mappings](README.images/server-path-mappings.png)
+- configure the test framework so PHPStorm can run tests using the PHPStorm GUI (right click a test and select "run"). Add a PHPUnit by Remote Interpreter and choose the Docker interpreter. Make sure you set the config file and bootstrap file using paths that are local to the PHPStorm docker helper container as shown: Preferences > Languages & Frameworks > PHP > Test Frameworks ![test-framework](README.images/test-framework.png)
 
 ## Run!
 
@@ -25,7 +26,7 @@ lando phpunit "/app/web/core/modules/toolbar/tests/src/Unit/PageCache/AllowToolb
 # kernel test
 lando phpunit "/app/web/core/modules/field_ui/tests/src/Kernel/EntityDisplayTest.php"
 # functional test
-lando phpunit "/app/web/core/tests/Drupal/FunctionalTests/Breadcrumb/Breadcrumb404Test.php"
+lando phpunit "/app/web/core/modules/comment/tests/src/Functional/CommentAnonymousTest.php"
 # functional javascript test
 sh run-selenium.sh
 lando phpunit "/app/web/core/tests/Drupal/FunctionalJavascriptTests/Tests/JSWebWithWebDriverAssertTest.php"
@@ -48,3 +49,4 @@ The test output files can be found in various locations under the /files directo
 - find out why we cannot use phpunit 7
 - export and import PHPStorm settings
 - enable Test module by default
+- use Chromedriver without Selenium
