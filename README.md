@@ -10,16 +10,9 @@ The purpose of this lando "recipe" is to provide an easy setup for Drupal 8 core
 2. download the .lando.yml and 2 supporting files to a new empty dir.
 3. run lando start.  
 
-### Check your PHPStorm debug settings:
-- register Docker so you can register its PHP interpreter: Preferences > Build, Execution, Deployment > Docker ![docker](README.images/docker.png)
-- register the CLI PHP interpreter from Docker so you can use its debugger: Preferences > Languages & Frameworks > PHP ![cli-interpreters](README.images/cli-interpreters.png)
-- configure the PHP debug settings, especially the max simultaneous connections: Preferences > Languages & Frameworks > PHP > Debug ![debug](README.images/debug.png)
-- configure a server with path mappings so PHPStorm knows where you are when debugging. Make sure the server is named appserver and you map the top level path to /app: Preferences > Languages & Frameworks > PHP > Servers ![server-path-mappings](README.images/server-path-mappings.png)
-- configure the test framework so PHPStorm can run tests using the PHPStorm GUI (right click a test and select "run"). Add a PHPUnit by Remote Interpreter and choose the Docker interpreter. Make sure you set the config file and bootstrap file using paths that are local to the PHPStorm docker helper container as shown: Preferences > Languages & Frameworks > PHP > Test Frameworks ![test-framework](README.images/test-framework.png)
+### Run!
 
-## Run!
-
-You should now be able to run and debug Drupal 8 core tests. From the command line it looks like this: 
+You should now be able to run Drupal 8 core tests. From the command line it looks like this: 
 ```bash
 # unit test
 lando phpunit "/app/web/core/modules/toolbar/tests/src/Unit/PageCache/AllowToolbarPathTest.php"
@@ -33,9 +26,19 @@ lando phpunit "/app/web/core/tests/Drupal/FunctionalJavascriptTests/Tests/JSWebW
 ```
 NB: You need to provide the path to the test file as seen in the container, not the host. 
 NNB: For Functional Javascript tests you need to start the selenium server before running the test. Selenium requires that you have java installed on your host.
-Try and enable your debug listener in PHPStorm, setting a breakpoint in a test and running the test. If you cannot get this to work please leave feedback on the GitHub [project page](https://github.com/finnef/lando-drupal8-test-debugging).
 
 The test output files can be found in various locations under the /files directory.
+
+### Running tests and debugging in PHPStorm: check your PHPStorm debug settings:
+- register Docker so you can register its PHP interpreter: Preferences > Build, Execution, Deployment > Docker ![docker](README.images/docker.png)
+- register the CLI PHP interpreter from Docker so you can use its debugger: Preferences > Languages & Frameworks > PHP ![cli-interpreters](README.images/cli-interpreters.png)
+- configure the PHP debug settings, especially the max simultaneous connections: Preferences > Languages & Frameworks > PHP > Debug ![debug](README.images/debug.png)
+- configure a server with path mappings so PHPStorm knows where you are when debugging. Make sure the server is named appserver and you map the top level path to /app: Preferences > Languages & Frameworks > PHP > Servers ![server-path-mappings](README.images/server-path-mappings.png)
+- configure the test framework so PHPStorm can run tests using the PHPStorm GUI (right click a test and select "run"). Add a PHPUnit by Remote Interpreter and choose the Docker interpreter. Make sure you set the config file and bootstrap file using paths that are local to the PHPStorm docker helper container as shown: Preferences > Languages & Frameworks > PHP > Test Frameworks ![test-framework](README.images/test-framework.png)
+
+In PHPStorm try to right-click a test function and select 'run'. Running tests via the PHPStorm GUI currently only works with Unittests and Kerneltests
+
+Try and enable your debug listener in PHPStorm, setting a breakpoint in a test and running a test (CLI or GUI). You should now be able to debug your tests. 
 
 ### The files in this package do the following:
 - **.lando.yml**: the lando file that spins up the apache/php/database containers and set some defaults. Here the init.sh script is called after the containers are up.
