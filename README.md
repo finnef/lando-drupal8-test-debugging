@@ -6,9 +6,9 @@ The purpose of this lando "recipe" is to provide an easy setup for Drupal 8 core
 ## Setup 
 
 ### To start:
-1. make sure you have [lando](https://github.com/lando/lando/releases), Chrome and java installed on your computer.
-2. download the .lando.yml and 2 supporting files to a new empty dir.
-3. run lando start.  
+1. Make sure your software stack is installed and up to date: you need [lando](https://github.com/lando/lando/releases), Docker, Chrome and java.
+2. Download the the repo to a new empty dir.
+3. Run lando start from inside this dir.
 
 ### Run!
 
@@ -26,6 +26,7 @@ lando phpunit "/app/web/core/tests/Drupal/FunctionalJavascriptTests/Tests/JSWebW
 ```
 NB: You need to provide the path to the test file as seen in the container, not the host. 
 NNB: For Functional Javascript tests you need to start the selenium server before running the test. Selenium requires that you have java installed on your host.
+NNNB: Sometimes testing becomes very slow. It can help to restart docker, or even your entire machine.
 
 The test output files can be found in various locations under the /files directory.
 
@@ -36,7 +37,7 @@ The test output files can be found in various locations under the /files directo
 - configure a server with path mappings so PHPStorm knows where you are when debugging. Make sure the server is named appserver and you map the top level path to /app: Preferences > Languages & Frameworks > PHP > Servers ![server-path-mappings](README.images/server-path-mappings.png)
 - configure the test framework so PHPStorm can run tests using the PHPStorm GUI (right click a test and select "run"). Add a PHPUnit by Remote Interpreter and choose the Docker interpreter. Make sure you set the config file and bootstrap file using paths that are local to the PHPStorm docker helper container as shown: Preferences > Languages & Frameworks > PHP > Test Frameworks ![test-framework](README.images/test-framework.png)
 
-In PHPStorm try to right-click a test function and select 'run'. Running tests via the PHPStorm GUI currently only works with Unittests and Kerneltests
+In PHPStorm try to right-click a test function and select 'run'. Running tests via the PHPStorm GUI currently only works with Unittests and Kerneltests.
 
 Try and enable your debug listener in PHPStorm, setting a breakpoint in a test and running a test (CLI or GUI). You should now be able to debug your tests. 
 
@@ -53,3 +54,5 @@ Try and enable your debug listener in PHPStorm, setting a breakpoint in a test a
 - export and import PHPStorm settings
 - enable Test module by default
 - use Chromedriver without Selenium
+- cater for different ports if 80 is taken (in SIMPLETEST_BASE_URL)
+
