@@ -4,38 +4,46 @@
 cd $LANDO_MOUNT
 if [ -d 'web' ]; then
     echo "Web folder already exists. No git clone executed."
+    FIRST_RUN=0
 else
     # Do a git checkout of the current D8 core.
     echo "Cloning drupal core."
     git clone --depth 1 https://git.drupal.org/project/drupal.git web
-    echo "Composer installing drupal core."
-    cd web
-    composer install
+    FIRST_RUN=1
+fi
 
+echo "Composer installing drupal core."
+cd $LANDO_MOUNT/web
+composer install
+
+if [ $FIRST_RUN ]; then
     # Upgrade PHPUnit to work with PHP 7, add drush, console, selenium
     composer require --update-with-dependencies "phpunit/phpunit ^6.0" "drush/drush" "drupal/console" "joomla-projects/selenium-server-standalone"
+fi
 
+# Create file dirs.
+echo "Creating dirs and symlinks."
+cd $LANDO_MOUNT
+mkdir -p -m 777 web/sites/default/files/phpunit
+mkdir -p -m 777 web/sites/simpletest
+mkdir -p -m 777 files/private
+mkdir -p -m 777 files/tmp
+mkdir -p -m 777 files/sync
+
+# Symlink the settings and public file dir.
+if [ ! -e "$LANDO_MOUNT/web/sites/default/settings.php" ]; then
+    ln -s $LANDO_MOUNT/config/sites.default.settings.php $LANDO_MOUNT/web/sites/default/settings.php
+fi
+if [ ! -L "$LANDO_MOUNT/files/public" ]; then
+    ln -s $LANDO_APP_ROOT_BIND/web/sites/default/files $LANDO_MOUNT/files/public
+fi
+if [ ! -L "$LANDO_MOUNT/files/simpletest" ]; then
+    ln -s $LANDO_APP_ROOT_BIND/web/sites/simpletest $LANDO_MOUNT/files/simpletest
+fi
+
+if [ $FIRST_RUN ]; then
     echo "Installing default site."
-    # Create file dirs.
-    cd $LANDO_MOUNT
-    mkdir -p -m 777 web/sites/default/files/phpunit
-    mkdir -p -m 777 web/sites/simpletest
-    mkdir -p -m 777 files/private
-    mkdir -p -m 777 files/tmp
-    mkdir -p -m 777 files/sync
-
-    # Symlink the settings and public file dir.
-    if [ ! -L "$LANDO_MOUNT/web/sites/default/settings.php" ]; then
-        ln -s $LANDO_MOUNT/config/sites.default.settings.php $LANDO_MOUNT/web/sites/default/settings.php
-    fi
-    if [ ! -L "$LANDO_MOUNT/files/public" ]; then
-        ln -s $LANDO_APP_ROOT_BIND/web/sites/default/files $LANDO_MOUNT/files/public
-    fi
-    if [ ! -L "$LANDO_MOUNT/files/simpletest" ]; then
-        ln -s $LANDO_APP_ROOT_BIND/web/sites/simpletest $LANDO_MOUNT/files/simpletest
-    fi
-
-    cd web
+    cd $LANDO_MOUNT/web
     drush site-install -y
 fi
 

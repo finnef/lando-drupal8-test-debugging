@@ -6,9 +6,9 @@ The purpose of this lando "recipe" is to provide an easy setup for Drupal 8 core
 ## Setup 
 
 ### To start:
-1. make sure you have [lando](https://github.com/lando/lando/releases), Chrome and java installed on your computer.
-2. download the .lando.yml and 2 supporting files to a new empty dir.
-3. run lando start.  
+1. Make sure your software stack is installed and up to date: you need [lando](https://github.com/lando/lando/releases), Docker, Chrome and java.
+2. Download the the repo to a new empty dir.
+3. Run lando start from inside this dir.
 
 ### Check your PHPStorm debug settings:
 - register Docker so you can register its PHP interpreter: Preferences > Build, Execution, Deployment > Docker ![docker](README.images/docker.png)
@@ -33,6 +33,7 @@ lando phpunit "/app/web/core/tests/Drupal/FunctionalJavascriptTests/Tests/JSWebW
 ```
 NB: You need to provide the path to the test file as seen in the container, not the host. 
 NNB: For Functional Javascript tests you need to start the selenium server before running the test. Selenium requires that you have java installed on your host.
+NNNB: Sometimes testing becomes very slow. It can help to restart docker, or even your entire machine.
 Try and enable your debug listener in PHPStorm, setting a breakpoint in a test and running the test. If you cannot get this to work please leave feedback on the GitHub [project page](https://github.com/finnef/lando-drupal8-test-debugging).
 
 The test output files can be found in various locations under the /files directory.
@@ -50,3 +51,5 @@ The test output files can be found in various locations under the /files directo
 - export and import PHPStorm settings
 - enable Test module by default
 - use Chromedriver without Selenium
+- cater for different ports if 80 is taken (in SIMPLETEST_BASE_URL)
+
