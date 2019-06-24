@@ -13,7 +13,7 @@ else
 fi
 
 echo "Composer installing drupal core."
-cd $LANDO_MOUNT/web
+cd /app/web
 composer install
 
 if [ $FIRST_RUN ]; then
@@ -23,31 +23,32 @@ fi
 
 # Create file dirs.
 echo "Creating dirs and symlinks."
-cd $LANDO_MOUNT
-mkdir -p -m 777 web/sites/default/files/phpunit
-mkdir -p -m 777 web/sites/simpletest
-mkdir -p -m 777 files/private
-mkdir -p -m 777 files/tmp
-mkdir -p -m 777 files/sync
+cd /app
+mkdir -p -m 777 /app/web/sites/default/files/phpunit
+mkdir -p -m 777 /app/web/sites/simpletest
+mkdir -p -m 777 /app/files/private
+mkdir -p -m 777 /app/files/tmp
+mkdir -p -m 777 /app/files/sync
 
-# Symlink the settings and public file dir.
-if [ ! -e "$LANDO_MOUNT/web/sites/default/settings.php" ]; then
-    ln -s $LANDO_MOUNT/config/sites.default.settings.php $LANDO_MOUNT/web/sites/default/settings.php
+# Copy the settings and symlink the file dirs.
+if [ ! -e "/app/web/sites/default/settings.php" ]; then
+    cp /app/config/sites.default.settings.php /app/web/sites/default/settings.php
 fi
-if [ ! -L "$LANDO_MOUNT/files/public" ]; then
-    ln -s $LANDO_APP_ROOT_BIND/web/sites/default/files $LANDO_MOUNT/files/public
+if [ ! -L "/app/files/public" ]; then
+    ln -s /app/web/sites/default/files /app/files/public
 fi
-if [ ! -L "$LANDO_MOUNT/files/simpletest" ]; then
-    ln -s $LANDO_APP_ROOT_BIND/web/sites/simpletest $LANDO_MOUNT/files/simpletest
+if [ ! -L "files/simpletest" ]; then
+    ln -s /app/web/sites/simpletest /app/files/simpletest
 fi
 
 if [ $FIRST_RUN ]; then
     echo "Installing default site."
-    cd $LANDO_MOUNT/web
+    cd /app/web
     drush site-install -y
+    cd /app/
 fi
 
-if [ ! -f $LANDO_MOUNT/web/.gitignore ]; then
+if [ ! -f /app/web/.gitignore ]; then
     # Ignore changed core files
     echo "composer.json
 composer.lock
@@ -55,17 +56,17 @@ vendor
 sites/default/settings.php
 sites/default/files
 sites/simpletest
-" > $LANDO_MOUNT/web/.gitignore
+" > /app/web/.gitignore
 fi
 
 # Create phpunit.xml and configure.
-if [ ! -f $LANDO_MOUNT/web/core/phpunit.xml ]; then
+if [ ! -f /app/web/core/phpunit.xml ]; then
     echo 'Creating phpunit.xml.'
-    cd $LANDO_MOUNT/web/core
+    cd /app/web/core
     cp phpunit.xml.dist phpunit.xml
-    sed -i 's/SIMPLETEST_DB" value=""/SIMPLETEST_DB" value="sqlite:\/\/localhost\/\'$LANDO_MOUNT'\/web\/sites\/default\/files\/test.sqlite"/' phpunit.xml
+    sed -i 's/SIMPLETEST_DB" value=""/SIMPLETEST_DB" value="sqlite:\/\/localhost\/\/app\/web\/sites\/default\/files\/test.sqlite"/' phpunit.xml
     sed -i 's/SIMPLETEST_BASE_URL" value=""/SIMPLETEST_BASE_URL" value="http:\/\/\'$LANDO_APP_NAME'.'$LANDO_DOMAIN'"/' phpunit.xml
-    sed -i 's/BROWSERTEST_OUTPUT_DIRECTORY" value=""/BROWSERTEST_OUTPUT_DIRECTORY" value="\'$LANDO_MOUNT'\/web\/sites\/default\/files\/phpunit"/' phpunit.xml
-    sed -i 's/beStrictAboutOutputDuringTests="true"/beStrictAboutOutputDuringTests="false" verbose="true" printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"/' phpunit.xml
-    sed -i 's/<\/phpunit>/<logging><log type="testdox-text" target="\'$LANDO_MOUNT'\/web\/sites\/default\/files\/testdox.txt"\/><\/logging><\/phpunit>/' phpunit.xml
+    sed -i 's/BROWSERTEST_OUTPUT_DIRECTORY" value=""/BROWSERTEST_OUTPUT_DIRECTORY" value="\/app\/web\/sites\/default\/files\/phpunit"/' phpunit.xml
+    sed -i 's/beStrictAboutOutputDuringTests="true"/beStrictAboutOutputDuringTests="false" verbose="true"/' phpunit.xml
+    sed -i 's/<\/phpunit>/<logging><log type="testdox-text" target="\/app\/web\/sites\/default\/files\/testdox.txt"\/><\/logging><\/phpunit>/' phpunit.xml
 fi

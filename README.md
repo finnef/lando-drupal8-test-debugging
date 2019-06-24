@@ -24,8 +24,8 @@ lando phpunit "/app/web/core/modules/comment/tests/src/Functional/CommentAnonymo
 sh run-selenium.sh
 lando phpunit "/app/web/core/tests/Drupal/FunctionalJavascriptTests/Tests/JSWebWithWebDriverAssertTest.php"
 ```
-NB: You need to provide the path to the test file as seen in the container, not the host. 
-NNB: For Functional Javascript tests you need to start the selenium server before running the test. Selenium requires that you have java installed on your host.
+NB: You need to provide the path to the test file as seen in the container, not the host.  
+NNB: For Functional Javascript tests you need to start the selenium server before running the test. Selenium requires that you have java installed on your host.  
 NNNB: Sometimes testing becomes very slow. It can help to restart docker, or even your entire machine.
 
 The test output files can be found in various locations under the /files directory.

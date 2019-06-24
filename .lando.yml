@@ -2,31 +2,34 @@ name: drupal8phpunit
 # https://docs.devwithlando.io/tutorials/drupal8.html
 recipe: drupal8
 
+# Requires lando 3.0.0-rc2 or higher.
+# You can put local (non-git) overrides in .lando.local.yml
+
 # Add some default configuration for the recipe here. Which will be passed to all the services within the recipe.
 # https://docs.devwithlando.io/recipes/drupal8.html
 config:
   # Set the webroot dir.
   webroot: web
-  # Enable xdebug autostart for CLI debugging.
-  xdebug: true
+  # Enable xdebug using "lando xdebug-on" tooling defined below.
+  xdebug: false
 
 # We can add additional services here or even override some configuration.
 services:
   appserver:
     run:
-      - 'bash $LANDO_MOUNT/config/init.sh'
+      - 'bash config/init.sh'
     overrides:
-      services:
-        environment:
-          # Enable PHPStorm XDebug with CLI.
-          PHP_IDE_CONFIG: "serverName=appserver"
-          # Set the Mink webdriver args.
-          MINK_DRIVER_ARGS_WEBDRIVER: '["chrome", null, "http://host.docker.internal:4444/wd/hub"]'
-        volumes:
-            # Fix linux docker host.docker.internal resolving.
-          - '$LANDO_APP_ROOT/config/linux-hosts.sh:/scripts/linux-hosts.sh'
+      environment:
+        # Enable PHPStorm XDebug with CLI.
+        PHP_IDE_CONFIG: "serverName=appserver"
+        # Set the Mink webdriver args.
+        MINK_DRIVER_ARGS_WEBDRIVER: '["chrome", null, "http://host.docker.internal:4444/wd/hub"]'
+      volumes:
+          # Fix linux docker host.docker.internal resolving.
+        - 'config/linux-hosts.sh:/scripts/linux-hosts.sh'
   database:
     # Add a static db port for easy bookmarking and access through SQL clients.
+    # Ideally you would set this in a .lando.local.yml.
     portforward: 33006
 
 # This will add some tools from the containers to the command line of your OS.
@@ -37,6 +40,16 @@ tooling:
     description: "Run PHP Unit tests: lando phpunit"
     cmd: "/app/web/vendor/bin/phpunit --debug --configuration /app/web/core/phpunit.xml --printer=\\Drupal\\Tests\\Listeners\\HtmlOutputPrinter"
   drush:
-    cmd: "/app/web/vendor/bin/drush --root=/app/web"
+    cmd: "/app/web/vendor/bin/drush --root=/app/web --uri=http://drupal8phpunit.lndo.site"
   drupal:
     cmd: "/app/web/vendor/bin/drupal --root=/app/web"
+  xdebug-on:
+    service: appserver
+    description: Enable xdebug.
+    cmd: "docker-php-ext-enable xdebug && /etc/init.d/apache2 reload"
+    user: root
+  xdebug-off:
+    service: appserver
+    description: Disable xdebug.
+    cmd: "rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && /etc/init.d/apache2 reload"
+    user: root
