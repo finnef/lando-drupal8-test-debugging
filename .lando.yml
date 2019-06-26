@@ -8,6 +8,8 @@ recipe: drupal8
 # Add some default configuration for the recipe here. Which will be passed to all the services within the recipe.
 # https://docs.devwithlando.io/recipes/drupal8.html
 config:
+  # Set the php version.
+  php: 7.3
   # Set the webroot dir.
   webroot: web
   # Enable xdebug using "lando xdebug-on" tooling defined below.
