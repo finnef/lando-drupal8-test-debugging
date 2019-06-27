@@ -36,6 +36,8 @@ The test output files can be found in various locations under the /files directo
 Try and enable xdebug ('lando xdebug-on'), enable your debug listener in PHPStorm, setting a breakpoint in a test and running a test. You should now be able to debug your tests. 
 
 NB: Running Docker (for Mac) with a debugger on slows down php quite a bit. Use the tooling provided to quickly switch debugging on/off without restarting your containers: 'lando xdebug-on' and 'lando xdebug-off'.  
+NNB: Docker for Mac can be quite slow because of the slow file syncing. The default settings sync your user folder, including all data in ~/Library. To speed up Docker you should only sync folders you need: your project folders, and the composer/ssh/lando config dirs: 
+![docker-file-sharing](README.images/docker-file-sharing.png)
 
 ### Running tests in PHPStorm: check your PHPStorm debug settings:
 - To run tests from the PhpStorm GUI you need to configure a test framework. The test framework needs a CLI interpreter that refers to Docker, so the first thing to do is configure PhpStorm to register Docker: Preferences > Build, Execution, Deployment > Docker ![docker](README.images/docker.png)
