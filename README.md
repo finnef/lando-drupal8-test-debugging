@@ -57,7 +57,7 @@ In PHPStorm try to right-click a test function and select 'run'. Running tests v
 - **run-selenium.sh**: this script sets the correct Chrome drive path and launches the project-local standalone Selenium server.
 
 
-## Future imporvements
+## Future improvements
 - run functional and fjs tests via PHPStorm GUI
 - export and import PHPStorm settings
 - enable Test module by default
