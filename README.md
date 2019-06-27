@@ -7,8 +7,9 @@ The purpose of this lando "recipe" is to provide an easy setup for Drupal 8 core
 
 ### To start:
 1. Make sure your software stack is installed and up to date: you need an up to date version of [lando](https://github.com/lando/lando/releases), Docker, Chrome and java.
-2. Download the the repo to a new empty dir.
-3. Start docker and run lando start from inside this dir.
+2. Download the the repo to a new empty project directory.
+3. Start docker (make sure your project dir [or parent dir] is shared in Docker > Preferences > File sharing) 
+4. run 'lando start' from inside this dir.
 
 ### Run!
 
@@ -59,7 +60,7 @@ In PHPStorm try to right-click a test function and select 'run'. Running tests v
 - **run-selenium.sh**: this script sets the correct Chrome drive path and launches the project-local standalone Selenium server.
 
 
-## Future imporvements
+## Future improvements
 - run functional and fjs tests via PHPStorm GUI
 - export and import PHPStorm settings
 - enable Test module by default
